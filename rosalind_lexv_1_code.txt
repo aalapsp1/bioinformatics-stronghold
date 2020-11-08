@@ -1,7 +1,3 @@
-# Setting of working directory
-import os
-os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/LEXV')
-
 # Parsing of data into alphabet and string length
 data = open('rosalind_lexv.txt', 'r')
 alphabet = [letter for letter in list(data.readline().strip()) if letter is not ' ']
