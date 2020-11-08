@@ -39,7 +39,6 @@ while Length_Distinct != Length_Union:
 Minimum_Edges = ((len(Adjacency_List) - 1) + Isolates)
 
 # Generation of answer
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\32. Completing a Tree\Answer')
 Answer = open('32. Answer.txt', 'w')
 Answer.write(str(Minimum_Edges))
 Answer.close()
