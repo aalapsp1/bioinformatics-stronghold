@@ -1,7 +1,3 @@
-# Setting working directory
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\30. Finding a Spliced Motif\Datasets')
-
 # Parsing data into pre-mRNA and target motif
 Raw_Data = open('rosalind_sseq.txt', 'r')
 Strings = []
@@ -27,7 +23,6 @@ for Nucleotide in Target_Motif:
             x += 1
 
 # Generation of answer
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\30. Finding a Spliced Motif\Answer')
 Answer = open('30. Answer.txt', 'w')
 for Index in Indices:
     Answer.write(str(Index) + ' ')
