@@ -25,7 +25,6 @@ for Substring in Four_Mers:
     Four_Mer_Composition.append(Occurence)
 
 # Generating answer
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\36. k-Mer Composition\Answer')
 Answer = open('36. Answer.txt', 'w')
 for Number in Four_Mer_Composition:
     Answer.write(str(Number) + ' ')
