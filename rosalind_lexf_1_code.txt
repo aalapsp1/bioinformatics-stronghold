@@ -1,7 +1,3 @@
-#Setting of working directory.
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\23. Enumerating k-mers Lexicographically\Datasets')
-
 #Parsing of data into alphabet and string length.
 Data = open('rosalind_lexf.txt', 'r')
 Alphabet = [Letter for Letter in list(Data.readline().strip()) if Letter is not ' ']
@@ -12,7 +8,6 @@ import itertools
 Strings = [''.join(Product) for Product in list(itertools.product(Alphabet, repeat=Length))]
 
 #Generation of Answer.
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\23. Enumerating k-mers Lexicographically\Answer')
 Answer = open('23. Answer.txt', 'w')
 for String in Strings:
     Answer.write(String + '\n')
