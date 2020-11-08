@@ -1,0 +1,40 @@
+#Retrieving and parsing data.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\21. Locating Restriction Sites\Datasets')
+String = ''.join(open('rosalind_revp.txt', 'r').readlines()[1:]).strip().replace('\n', '')
+
+#Determining all positions of reverse palindromes between size 4 and 12.
+PositionList = []
+LengthList = []
+Position = 0
+Length = 4
+for Nucleotide in String:
+    while Length <= 12:
+        if len(String[Position:Length + Position]) == Length:
+            Candidate = String[Position:Position + Length]
+            Reverse = Candidate[::-1]
+            ReverseComplementList = []
+            for Nucleotide in Reverse:
+                if Nucleotide is 'A':
+                    ReverseComplementList.append('T')
+                if Nucleotide is 'T':
+                    ReverseComplementList.append('A')
+                if Nucleotide is 'C':
+                    ReverseComplementList.append('G')
+                if Nucleotide is 'G':
+                    ReverseComplementList.append('C')
+            ReverseComplementString = ''.join(ReverseComplementList)
+            if ReverseComplementString == Candidate:
+                PositionList.append(Position + 1)
+                LengthList.append(Length)
+        Length += 1
+        ReverseComplementList = []
+    Position += 1
+    Length = 4
+
+#Generation of Answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\21. Locating Restriction Sites\Answer')
+Answer = open('21. Answer.txt', 'w')
+for Position, Length in zip(PositionList, LengthList):
+    Answer.write(str(Position) + ' ' + str(Length) + '\n')
+Answer.close()

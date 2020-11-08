@@ -1,0 +1,30 @@
+# Setting of working directory
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/LEXV')
+
+# Parsing of data into alphabet and string length
+data = open('rosalind_lexv.txt', 'r')
+alphabet = [letter for letter in list(data.readline().strip()) if letter is not ' ']
+n = int(data.readline())
+
+# Insert dummy symbol to alphabet to normalize comparisons between strings of different lengths
+alphabet.insert(0, '*')
+
+# Generation of all possible strings, ordered lexicographically
+import itertools
+strings = []
+while n > 0:
+    strings = strings + [''.join(permutation) for permutation in list((itertools.product(alphabet, repeat=n)))]
+    n -= 1
+lexicographically_sorted_strings = sorted(strings, key=lambda string: [alphabet.index(c) for c in string])
+
+# Trim list of all strings containing the dummy symbol
+trimmed_lexicographically_sorted_strings = [string for string 
+        in lexicographically_sorted_strings
+        if '*' not in string]
+
+# Generation of Answer.
+answer = open('lexv_answer.txt', 'w')
+for string in trimmed_lexicographically_sorted_strings:
+    answer.write(string + '\n')
+answer.close()

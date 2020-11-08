@@ -1,0 +1,12 @@
+n = open('rosalind_hamm.txt', 'r')
+x = n.readline().strip()
+y = n.readline().strip()
+print x
+print y
+dH = 0
+for nt1, nt2 in zip(x, y):
+    if nt1 is not nt2:
+        dH += 1
+j = open('Answer.txt', 'w')
+j.write(str(dH))
+j.close()

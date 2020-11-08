@@ -1,0 +1,12 @@
+data = open('rosalind_iev.txt', 'r')
+pop = data.read().split()
+p0 = 1
+p1 = 1
+p2 = 1
+p3 = 0.75
+p4 = 0.5
+p5 = 0
+ExpOff = (int(pop[0]))*p0*2 + int(pop[1])*p1*2 + int(pop[2])*p2*2 + int(pop[3])*p3*2 + int(pop[4])*p4*2 + int(pop[5])*p5*2
+ans = open('Answer.txt', 'w')
+ans.write(str(ExpOff))
+ans.close()

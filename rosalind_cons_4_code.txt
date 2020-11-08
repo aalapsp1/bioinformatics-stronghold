@@ -1,0 +1,54 @@
+n = open('rosalind_cons.txt', 'r')
+d = {}
+new = n.read().split('>')
+for element in new:
+    d[str(element)[0:13]] = str(element)[14:].replace('\n', "")
+del d['']
+for string in d.values():
+    y = len(string)
+lists = [[] for i in range(y)]
+a = 0
+t = 0
+c = 0
+g = 0
+A = []
+T = []
+C = []
+G = []
+x = 0
+
+while x < len(string):
+    for string in d.values():
+        if string[x] is 'A':
+            a += 1
+        if string[x] is 'G':
+            g += 1
+        if string[x] is 'C':
+            c += 1
+        if string[x] is 'T':
+            t += 1
+    A.append(a)
+    T.append(t)
+    G.append(g)
+    C.append(c)
+    a = 0
+    t = 0
+    g = 0
+    c = 0
+    x += 1
+    
+cons = []
+for a, b, c, d in zip(A, T, G, C):
+    if max(a, b, c, d) is a:
+        cons.append('A')
+    elif max(a, b, c, d) is b:
+        cons.append('T')
+    elif max(a, b, c, d) is c:
+        cons.append('G')
+    elif max(a, b, c, d) is d:
+        cons.append('C')
+consensus = ''.join(cons)
+
+q = open('Ans.txt', 'w')
+q.write(consensus + '\n' + 'A: '+ str(A).replace(',', '').replace('[','').replace(']','') + '\n' + 'C: '+ str(C).replace(',', '').replace('[','').replace(']','') + '\n' + 'G: '+ str(G).replace(',', '').replace('[','').replace(']','') + '\n' + 'T: '+ str(T).replace(',', '').replace('[','').replace(']',''))
+q.close()

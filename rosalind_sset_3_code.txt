@@ -1,0 +1,13 @@
+# Setting working directory
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/SSET')
+
+# Parsing data
+data = open('rosalind_sset.txt' ,'r')
+n = int(data.next()) 
+subsets = (2**n)%1000000
+
+# Generating answer
+answer = open('sset_answer.txt', 'w')
+answer.write(str(subsets))
+answer.close()

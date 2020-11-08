@@ -1,0 +1,21 @@
+n = open('rosalind_iprb.txt','r')
+b = n.readline().split()
+
+pick1 = float(b[0]) + float(b[1]) + float(b[2])
+AA1 = float(int(b[0])/pick1)
+Aa1 = float(int(b[1])/pick1)
+aa1 = float(int(b[2])/pick1)
+
+pick2if = (float(b[0]) + float(b[1]) + float(b[2]) - 1)
+AA2if = float((int(b[0])-1)/pick2if)
+Aa2if = float((int(b[1])-1)/pick2if)
+aa2if = float((int(b[2])-1)/pick2if)
+
+pick2ifnot = (float(b[0]) + float(b[1]) + float(b[2]) - 1)
+AA2ifnot = float((int(b[0]))/pick2ifnot)
+Aa2ifnot = float((int(b[1]))/pick2ifnot)
+aa2ifnot = float((int(b[2]))/pick2ifnot)
+
+ans = open('ans.txt','w')
+ans.write(str(1-((aa1*aa2if)+(aa1*Aa2ifnot*0.5)+(Aa1*aa2ifnot*0.5)+(Aa1*Aa2if*0.25))))
+ans.close()

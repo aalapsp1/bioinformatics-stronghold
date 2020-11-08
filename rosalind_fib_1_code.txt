@@ -1,0 +1,12 @@
+a = 1
+b = 1
+n = 1
+k = 5
+while n <= 32:
+    c = a*k + b
+    a = b
+    b = c
+    n += 1
+r = open('Answer.txt', 'w')
+r.write(str(c))
+r.close()

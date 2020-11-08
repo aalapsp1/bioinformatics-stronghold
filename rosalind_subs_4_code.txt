@@ -1,0 +1,13 @@
+x = open('rosalind_subs.txt', 'r')
+s = x.readlines()[0].strip()
+x = open('rosalind_subs.txt', 'r')
+t = x.readlines()[1].strip()
+import re
+v = [nt for nt in range(len(s)) if s.startswith(t, nt)]
+u = map(int, v)
+g = [x+1 for x in u]
+b = str(g)
+k = b[1:-1].replace(',', '')
+a = open('Ans.txt', 'w')
+a.write(k)
+a.close()

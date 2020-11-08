@@ -1,0 +1,15 @@
+n = open('rosalind_gc.txt', 'r')
+d = {}
+new = n.read().split('>')
+for element in new:
+    d[str(element)[0:13].replace('/n', "")] = str(element)[14:].replace('\n', "")
+del d['']
+for key in d:
+    GC = float(d[key].count('C') + d[key].count('G'))
+    GTCA = float(d[key].count('C') + d[key].count('G') + d[key].count('T') + d[key].count('A'))
+    GCcontent = (GC/GTCA) * 100
+    d[key] = GCcontent
+import operator
+x = open('Answer.txt', 'w')
+x.write(str(max(d.iteritems(), key = operator.itemgetter(1))[0]) + str('\n') + str(d[max(d.iteritems(), key = operator.itemgetter(1))[0]]))
+x.close()

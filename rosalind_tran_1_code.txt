@@ -1,0 +1,36 @@
+# Setting dataset directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\31. Transitions and Transversions\Datasets')
+
+# Parsing data into the two given strings
+Raw_Data = open('rosalind_tran.txt', 'r')
+Strings = []
+for FASTA in Raw_Data.read().split('>')[1:]:
+    Strings.append(''.join([Symbol
+                            for Symbol
+                            in FASTA.replace('Rosalind_', '').replace('\n', '')
+                            if Symbol.isalpha()]))
+String_1 = Strings[0]
+String_2 = Strings[1]
+
+# Determining the transition/transversion ratio
+Transitions = 0
+Transversions = 0
+Same = 0
+Pyrimidines = ['C', 'T']
+Purines = ['A', 'G']
+for Paired_Nucleotides in zip(String_1, String_2):
+    if len(set(Paired_Nucleotides)) == 1:
+        Same += 1
+    elif set(Paired_Nucleotides) == set(Purines) or set(Paired_Nucleotides) == set(Pyrimidines):
+       Transitions += 1
+    else:
+        Transversions += 1
+
+Transition_Transversion_Ratio = round(float(Transitions/Transversions), 11)
+
+# Creating answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\31. Transitions and Transversions\Answer')
+Answer = open('31. Answer.txt', 'w')
+Answer.write(str(Transition_Transversion_Ratio))
+Answer.close()

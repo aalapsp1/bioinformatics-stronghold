@@ -1,0 +1,27 @@
+#Setting of dataset directory.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\19. Enumerating Gene Orders\Datasets')
+
+#Parsing of dataset.
+n = int(open('rosalind_perm.txt', 'r').read().strip())
+
+#Generation of total number of permutations.
+import math
+
+#Generation of iterable list.
+NumberList = []
+while n is not 0:
+    NumberList.append(n)
+    n -= 1
+
+#Generation of all permutations.
+n = int(open('rosalind_perm.txt', 'r').read().strip())
+import itertools
+
+#Creation of answer.
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\19. Enumerating Gene Orders\Answer')
+Answer = open('19. Answer.txt', 'w')
+Answer.write(str(math.factorial(n)) + '\n')
+for Permutation in list(itertools.permutations(NumberList)):
+    Answer.write(" ".join(str(Number) for Number in Permutation) + '\n')
+Answer.close()

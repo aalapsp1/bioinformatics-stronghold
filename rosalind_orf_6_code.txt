@@ -1,0 +1,120 @@
+#Setting of data directory.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\18. Open Reading Frames\Datasets')
+
+#Parsing of data.
+String = ''.join((open('rosalind_orf.txt', 'r').readlines()[1:])).replace('\n', '')
+
+#Generation of reverse complement string.
+Reverse = String[::-1]
+ReverseComplementList = []
+for Nucleotide in Reverse:
+    if Nucleotide is 'A':
+        ReverseComplementList.append('T')
+    if Nucleotide is 'T':
+        ReverseComplementList.append('A')
+    if Nucleotide is 'C':
+        ReverseComplementList.append('G')
+    if Nucleotide is 'G':
+        ReverseComplementList.append('C')
+ReverseComplementString = ''.join(ReverseComplementList)
+
+#Defining the six possible reading frames.
+RF1String = String
+RF2String = String[1:]
+RF3String = String[2:]
+RF4String = ReverseComplementString
+RF5String = ReverseComplementString[1:]
+RF6String = ReverseComplementString[2:]
+RFStrings = [RF1String, RF2String, RF3String, RF4String, RF5String, RF6String]
+
+#Generation of codons.
+RFNumber_Codons = {}
+RFStringNumber = 1
+RFCodons = []
+for String in RFStrings:
+    CodonStartPosition = 0
+    while CodonStartPosition < (len(String) - 2):
+        RFCodons.append(String[CodonStartPosition:CodonStartPosition + 3])
+        CodonStartPosition += 3
+    RFNumber_Codons[RFStringNumber] = RFCodons
+    RFCodons = []
+    CodonStartPosition = 0
+    RFStringNumber += 1
+    
+#Translation of nucleotide sequence.
+RFNumber_Translation = {}
+for RFNumber, Codons in RFNumber_Codons.items():
+    Translation = []
+    for Codon in Codons:
+        if Codon == 'TTT' or Codon == 'TTC':
+            Translation.append('F')
+        if Codon == 'TTA' or Codon == 'TTG' or Codon == 'CTT' or Codon == 'CTC' or Codon == 'CTA' or Codon == 'CTG':
+            Translation.append('L')
+        if Codon == 'TCT' or Codon == 'TCC' or Codon == 'TCA' or Codon == 'TCG':
+            Translation.append('S')
+        if Codon == 'TAT' or Codon == 'TAC':
+            Translation.append('Y')
+        if Codon == 'TGT' or Codon == 'TGC':
+            Translation.append('C')
+        if Codon == 'TGG':
+            Translation.append('W')
+        if Codon == 'CCT' or Codon == 'CCC' or Codon == 'CCA' or Codon == 'CCG':
+            Translation.append('P')
+        if Codon == 'CAT' or Codon == 'CAC':
+            Translation.append('H')
+        if Codon == 'CAA' or Codon == 'CAG':
+            Translation.append('Q')
+        if Codon == 'CGT' or Codon == 'CGC' or Codon == 'CGA' or Codon == 'CGG':
+            Translation.append('R')
+        if Codon == 'ATT' or Codon == 'ATC' or Codon == 'ATA':
+            Translation.append('I')
+        if Codon == 'ATG':
+            Translation.append('M')
+        if Codon == 'ACT' or Codon == 'ACC' or Codon == 'ACA' or Codon == 'ACG':
+            Translation.append('T')
+        if Codon == 'AAT' or Codon == 'AAC':
+            Translation.append('N')
+        if Codon == 'AAA' or Codon == 'AAG':
+            Translation.append('K')
+        if Codon == 'AGT' or Codon == 'AGC':
+            Translation.append('S')
+        if Codon == 'AGA' or Codon == 'AGG':
+            Translation.append('R')
+        if Codon == 'GTT' or Codon == 'GTC' or Codon == 'GTA' or Codon == 'GTG':
+            Translation.append('V')
+        if Codon == 'GCT' or Codon == 'GCC' or Codon == 'GCA' or Codon == 'GCG':
+            Translation.append('A')
+        if Codon == 'GAT' or Codon == 'GAC':
+            Translation.append('D')
+        if Codon == 'GAA' or Codon == 'GAG':
+            Translation.append('E')
+        if Codon == 'GGT' or Codon == 'GGC' or Codon == 'GGA' or Codon == 'GGG':
+            Translation.append('G')
+        if Codon == 'TAA' or Codon == 'TAG' or Codon == 'TGA':
+            Translation.append('/')
+    RFNumber_Translation[RFNumber] = ''.join(Translation)
+
+#Generation of all Methionine-led substrings.
+MLedSubstrings = []
+for RFNumber, Translation in RFNumber_Translation.items():
+    x = 0
+    for AminoAcid in Translation:
+        if AminoAcid is 'M':
+            MLedSubstrings.append(Translation[x:])
+            x += 1
+        else:
+            x += 1
+            
+#Conversion of Methione-led substrings into coding regions by accounting for stop codons.
+CandidateORFs = []
+for Sequence in MLedSubstrings:
+    if '/' in Sequence:
+        CandidateORFs.append(Sequence[:Sequence.index('/')])      
+                
+#Creation of answer.
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\18. Open Reading Frames\Answer')
+Answer = open('Answer.txt', 'w')
+for String in list(dict.fromkeys(CandidateORFs)):
+    Answer.write(String + '\n')
+Answer.close()

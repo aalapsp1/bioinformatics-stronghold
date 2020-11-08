@@ -1,0 +1,23 @@
+data = open('rosalind_fibd.txt', 'r')
+parameters = list((data.read().strip("\n").split(" ")))
+n = int(parameters[0])
+m = int(parameters[1])
+a = 1
+b = 1
+poplist=[1,1,1,1]
+t = 3
+while t <= m:
+    c = a + b
+    a = b
+    b = c
+    t += 1
+    poplist.append(str(b))
+while m < t <= n:
+    c = a + b - int(poplist[-1-m])
+    a = b
+    b = c
+    t += 1
+    poplist.append(str(b))
+ans = open('Answer.txt', 'w')
+ans.write(str(poplist[-1]))
+ans.close()

@@ -1,0 +1,87 @@
+# Setting the working directory.
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/REAR')
+
+# Parsing of data into a list of permutation pairs.
+data = open('rosalind_rear.txt', 'r').read().strip().replace('\r', '').split('\n\n')
+
+permutation_pairs = [[permutation.split(' ') for permutation 
+        in pair.split('\n')] for pair 
+        in data]
+
+# Reverses a specified section of a given permutation and returns the reversed permutation.
+def reverser(permutation, i, j):
+    reversed_permutation = permutation[:min(i, j)] + permutation[min(i, j):max(i, j)][::-1] + permutation[max(i, j):]
+    return reversed_permutation
+
+# Returns the list of breakpoints of a given permutation with respect to a target permutation.
+def breakpoints(current_permutation, target_permutation):
+    breakpoints = []
+    for index in range(len(current_permutation)-1):
+        current_element = current_permutation[index]
+        adjacent_element = current_permutation[index+1]
+        if abs(target_permutation.index(current_element) - target_permutation.index(current_permutation[current_permutation.index(adjacent_element)])) != 1:
+            breakpoints.append(index+1)
+    return breakpoints
+
+# Generates a list of permutations resulting from a reversal using all possible pairwise breakpoint combinations of a given permutation.
+def permutation_generator(permutation, breakpoints):
+    import itertools
+    permutations = []
+    for breakpoint_combination in list(itertools.combinations(breakpoints, 2)):
+        permutations.append(reverser(permutation, breakpoint_combination[0], breakpoint_combination[1]))
+    return permutations
+
+# Determines the minimum reversal distance between an initial and target permutation.
+def minimum_reversal_distance_calculator(initial_permutation, target_permutation):
+
+    # Preliminary processing of initial and target permutations.
+    initial_permutation.insert(0, '!')
+    initial_permutation.append('?')
+    target_permutation.insert(0, '!')
+    target_permutation.append('?')
+
+    # Holds all candidate permutations according to their current reversal distance from the initial permutation.
+    permutations_by_reversal_distance = {}
+    permutations_by_reversal_distance[0] = [initial_permutation]
+
+    # Iterate over candidate permutations of one reversal distance generation to generate the next reversal distance generation of candidates.
+    # Repeat process until the target permutation is generated.
+    reversal_distance = 0 # Start iteration at the initial permutation.
+    
+    # Handles the case where the initial and target permutations are identical.
+    if initial_permutation == target_permutation:
+        return reversal_distance
+
+    while True:
+        permutations_by_reversal_distance[reversal_distance+1] = []
+        
+        # Generate the next reversal distance generation. 
+        for permutation in permutations_by_reversal_distance[reversal_distance]:
+            permutations_by_reversal_distance[reversal_distance+1].extend((permutation_generator(permutation, breakpoints(permutation, target_permutation))))
+       
+        # Check to see if the target permutation has been generated.
+        if target_permutation in permutations_by_reversal_distance[reversal_distance+1]:
+            return reversal_distance+1
+        
+        # Otherwise, cull permutations which do not have the minimum number of breakpoints.
+        else:
+            min_bp = len(target_permutation) # Upper bound of breakpoints.
+            minimum_reversals = []
+            for permutation in permutations_by_reversal_distance[reversal_distance+1]:
+                num_breakpoints = len(breakpoints(permutation, target_permutation))
+                if num_breakpoints < min_bp:
+                    min_bp = num_breakpoints
+                    minimum_reversals = [permutation]
+         	elif num_breakpoints == min_bp:
+                    minimum_reversals.append(permutation)
+            permutations_by_reversal_distance[reversal_distance+1] = minimum_reversals
+        
+        # Repeat process with the next reversal distance generation
+        reversal_distance += 1
+
+# Generate the reversal distances for the dataset.
+answer = open('rear_answer.txt', 'w')
+for permutation_pair in permutation_pairs:
+    answer.write(str(minimum_reversal_distance_calculator(permutation_pair[0], permutation_pair[1])) + ' ')
+answer.close()

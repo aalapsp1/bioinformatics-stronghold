@@ -1,0 +1,39 @@
+# Setting dataset directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\29. Enumerating Oriented Gene Orderings\Datasets')
+
+# Parsing data
+n = int(open('29. Sample.txt', 'r').read())
+Number_List = []
+while n is not -1:
+    Number_List.append(n)
+    n -= 1
+
+# Generating all signed permutations by first determining all signed combinations
+import itertools
+All_Possible_Signed_Combinations = []
+All_Possible_Signed_Permutations = []
+for Number in Number_List:
+    Combination_List = []
+    for Combination in itertools.combinations([Non_Zero for Non_Zero
+                                               in Number_List
+                                               if Non_Zero is not 0], Number):
+        Combination_List.append(list(Combination))
+    for Combination in Combination_List:
+        for i in range(1, len(Number_List)):
+            if i not in Combination:
+                Combination.append(-i)
+        All_Possible_Signed_Combinations.append(Combination)
+
+for Signed_Combination in All_Possible_Signed_Combinations:
+    for Signed_Permutation in list(itertools.permutations(Signed_Combination)):
+        All_Possible_Signed_Permutations.append(list(Signed_Permutation))
+
+# Generating answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\29. Enumerating Oriented Gene Orderings\Answer')
+Answer = open('29. Answer.txt', 'w')
+Answer.write(str(len(All_Possible_Signed_Permutations)) + '\n')
+for Signed_Permutation in All_Possible_Signed_Permutations:
+    Stringed_Signed_Permutation = [str(Integer) for Integer in Signed_Permutation]
+    Answer.write(' '.join(Stringed_Signed_Permutation) + '\n')
+Answer.close()

@@ -1,0 +1,37 @@
+#Setting of working directory.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\25. Genome Assembly as Shortest Superstring\Datasets')
+
+#Parsing of data into seed string and string bank.
+Data = open('rosalind_long.txt', 'r').read().replace('\n', '').replace('Rosalind_', '').split('>')[1:]
+StringList = [''.join(list(filter(lambda x: x.isalpha(), String))) for String in Data]
+ShortestSuperstring = [StringList[0]]
+StringBank = StringList[1:]
+
+#Generation of shortest superstring.
+while StringBank.copy():
+    for String in StringBank:
+        if ShortestSuperstring[-1][0:100] in String:
+            MaxLength = len(String)
+            for i in reversed(range(MaxLength + 1)):
+                if String[-i:] == ShortestSuperstring[-1][:i]:
+                    break
+            ShortestSuperstring.append(String + ShortestSuperstring[-1][i:])
+            StringBank.remove(String)
+            del ShortestSuperstring[0]
+        elif ShortestSuperstring[-1][-100:]in String:
+            MaxLength = len(String)
+            for i in reversed(range(MaxLength + 1)):
+                if String[:i] == ShortestSuperstring[-1][-i:]:
+                    break
+            ShortestSuperstring.append(ShortestSuperstring[-1] + String[i:])
+            StringBank.remove(String)
+            del ShortestSuperstring[0]
+        elif String in ShortestSuperstring[-1]:
+            StringBank.remove(String)
+            
+#Creation of answer.  
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\25. Genome Assembly as Shortest Superstring\Answer')  
+Answer = open('25. Answer.txt', 'w')
+Answer.write(ShortestSuperstring[-1])
+Answer.close()

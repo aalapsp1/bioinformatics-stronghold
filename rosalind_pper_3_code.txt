@@ -1,0 +1,19 @@
+# Setting dataset directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\27. Partial Permutations\Datasets')
+
+# Parsing dataset
+RawData = open('rosalind_pper.txt', 'r').read().strip().split(' ')
+n = int(RawData[0])
+k = int(RawData[1])
+
+# Generating all partial permutations of size k
+import math
+All_Partial_Permutations = (math.factorial(n)/math.factorial((n - k)))
+All_Partial_Permutations_Modulus = All_Partial_Permutations % 1000000
+
+#Creation of answer.
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\27. Partial Permutations\Answer')
+Answer = open('27. Answer.txt', 'w')
+Answer.write(str(round(All_Partial_Permutations_Modulus)) + '\n')
+Answer.close()

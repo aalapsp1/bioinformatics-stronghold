@@ -1,0 +1,39 @@
+data = open('rosalind_lcsm.txt', 'r')
+rawdata = data.read().strip().replace('\n','').split('>')
+del rawdata[0]
+FASTA = []
+sequence = []
+for datum in rawdata:
+    FASTA.append(datum[0:13])
+    sequence.append(datum[13:])
+dictionary = zip(FASTA, sequence)
+longest = 0
+n = max(sequence, key = len)
+x = 0
+y = 1
+matchlist = []
+stringlist = []
+for nt in n:
+    check = 1
+    while check == 1:
+        z = n[x:y]
+        for string in sequence:
+            if string is not sequence[0]:
+                if z in string:
+                    matchlist.append(1)
+                else:
+                    matchlist.append(0)
+        if all(matchlist) == True:
+            y += 1
+            check = 1
+            stringlist.append(z)
+        else:
+            x += 1
+            y = x+1
+            check = 0
+        matchlist = []
+        if y > len(n):
+            check = 0
+ans = open('Answer.txt', 'w')
+ans.write(max(stringlist, key = len))
+ans.close()

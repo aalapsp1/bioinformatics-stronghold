@@ -1,0 +1,60 @@
+# Setting working directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\34. Error Correction in Reads\Datasets')
+
+# Parsing data into a sequence of all reads
+Data = open('rosalind_corr.txt', 'r')
+Reads = [''.join([Symbol
+                 for Symbol
+                 in Sequence
+                 if Symbol.isalpha()])
+         for Sequence
+         in Data.read().replace('\n', '').split('>Rosalind_')[1:]]
+
+# Defining the reverse complementor function
+def RC(Sequence):
+    "Returns the reverse complement sequence of a DNA string"
+    ReverseComplement = []
+    for Symbol in Sequence[::-1]:
+        if Symbol is 'A':
+            ReverseComplement.append('T')
+        if Symbol is 'T':
+            ReverseComplement.append('A')
+        if Symbol is 'C':
+            ReverseComplement.append('G')
+        if Symbol is 'G':
+            ReverseComplement.append('C')
+    return ''.join(ReverseComplement)
+
+# Finding and sequestering all correct reads
+import copy
+OriginalData = set(copy.deepcopy(Reads))
+CorrectReads = []
+for Sequence in Reads.copy():
+    Reads.remove(Sequence)
+    if Sequence in Reads:
+        CorrectReads.append(Sequence)
+        CorrectReads.append(RC(Sequence))
+    if RC(Sequence) in Reads:
+        CorrectReads.append(Sequence)
+        CorrectReads.append(RC(Sequence))
+
+#Determing all incorrect reads by comparison to correct reads and generation of answer
+IncorrectReads = [Read for
+                  Read in OriginalData
+                  if Read not in set(CorrectReads)]
+
+def dH(Incorrect, Correct):
+    dH = 0
+    for nt1, nt2 in zip(Incorrect, Correct):
+        if nt1 is not nt2:
+            dH += 1
+    return dH
+
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\34. Error Correction in Reads\Answer') 
+Answer = open('34. Answer.txt', 'w')
+for ReadInc in IncorrectReads:
+    for ReadCor in set(CorrectReads):
+        if dH(ReadInc, ReadCor) == 1:
+            Answer.write(ReadInc + '->' + ReadCor + '\n')
+Answer.close()

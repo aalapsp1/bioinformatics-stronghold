@@ -1,0 +1,36 @@
+# Setting working directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\36. k-Mer Composition\Datasets')
+
+# Parsing data
+Data = open('rosalind_kmer.txt', 'r')
+String = ''.join([Symbol
+                 for Symbol
+                 in Data.read().replace('>Rosalind_', '').replace('\n', '')
+                 if Symbol.isalpha()])
+
+# Generating all possible 4-mers in lexicographic order
+import itertools
+Four_Mers = [''.join(Cartesian_Product)
+                  for Cartesian_Product
+                  in itertools.product('ACGT', repeat=4)]
+
+# Determining the 4-mer composition of the given string
+Four_Mer_Composition = []
+for Substring in Four_Mers:
+    x = 0
+    Occurence = 0
+    for Nucleotide in String:
+        if String[x:x + 4] == Substring:
+            Occurence += 1
+            x += 1
+        else:
+            x += 1
+    Four_Mer_Composition.append(Occurence)
+
+# Generating answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\36. k-Mer Composition\Answer')
+Answer = open('36. Answer.txt', 'w')
+for Number in Four_Mer_Composition:
+    Answer.write(str(Number) + ' ')
+Answer.close()

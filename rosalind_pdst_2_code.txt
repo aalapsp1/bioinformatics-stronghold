@@ -1,0 +1,32 @@
+# Setting working directory
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/PDST')
+
+# Parsing data
+raw_data = open('rosalind_pdst.txt' ,'r').read().split('>')
+strings = []
+for string in raw_data:
+    strings.append(string[string.find('\r\n'):].strip().replace('\r\n', ''))
+del strings[0]
+
+# Define function to calculate pairwise p-distance values
+def p_distance(s1, s2):
+    dH = 0
+    for nt1, nt2 in zip(s1, s2):
+        if nt1 is not nt2:
+            dH += 1
+    return format(float(dH)/len(s1), '.5f')
+
+# Create and populate distance matrix
+distance_matrix = [[] for i in strings]
+for s1 in strings:
+    for s2 in strings:
+        distance_matrix[strings.index(s2)].append(p_distance(s1, s2))
+
+# Generating answer
+answer = open('pdst_answer.txt', 'w')
+for column in distance_matrix:
+    for p_distance in column:
+        answer.write(p_distance + ' ')
+    answer.write('\n')
+answer.close()

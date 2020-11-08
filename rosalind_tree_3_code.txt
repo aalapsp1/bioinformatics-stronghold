@@ -1,0 +1,49 @@
+# Setting the working directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\32. Completing a Tree\Datasets')
+
+# Parsing data into the number of nodes and the adjacency list
+Raw_Data = open('rosalind_tree.txt', 'r').read().strip().split('\n')
+
+Number_Of_Nodes = int(Raw_Data[0])
+
+Adjacency_List = [set([int(Node)
+                       for Node
+                       in List.split(' ')])
+                  for List
+                  in Raw_Data[1:]]
+
+# Determining all existing paths and isolated nodes         
+Length_Distinct = 0
+for Set in Adjacency_List:
+    Length_Distinct += len(Set)
+
+Union_Set = set()
+for Set in Adjacency_List:
+    Union_Set |= Set
+Length_Union = len(Union_Set)
+
+Isolates = (Number_Of_Nodes - Length_Union)
+
+while Length_Distinct != Length_Union:
+    for Path_1 in Adjacency_List:
+        for Path_2 in Adjacency_List:
+            if Path_1 is not Path_2:
+                if Path_1 & Path_2:
+                    Path_1 |= Path_2
+                    Adjacency_List.remove(Path_2)
+    Length_Distinct = 0
+    for Set in Adjacency_List:
+        Length_Distinct += len(Set)
+    Union_Set = set()
+    for Set in Adjacency_List:
+        Union_Set |= Set               
+
+# Computing minimum number of edges needed to form a tree
+Minimum_Edges = ((len(Adjacency_List) - 1) + Isolates)
+
+# Generation of answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\32. Completing a Tree\Answer')
+Answer = open('32. Answer.txt', 'w')
+Answer.write(str(Minimum_Edges))
+Answer.close()

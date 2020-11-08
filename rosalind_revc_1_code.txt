@@ -1,0 +1,17 @@
+j = open('rosalind_revc.txt', 'r')
+s = j.read()
+r = list(s[::-1])
+x = []
+for nt in r:
+    if nt is 'A':
+        x.append('T')
+    if nt is 'T':
+        x.append('A')
+    if nt is 'C':
+        x.append('G')
+    if nt is 'G':
+        x.append('C')
+b = ''.join(x)
+a = open('Answer.txt', 'w')
+a.write(b)
+a.close()

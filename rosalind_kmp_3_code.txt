@@ -1,0 +1,36 @@
+# Setting working directory
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/37. Speeding Up Motif Finding/Datasets')
+
+# Parsing data
+data = open('rosalind_kmp.txt' ,'r')
+#data = open('37. Sample.txt' ,'r')
+
+string = ''.join(symbol
+          for symbol
+          in data.read().replace('>Rosalind_', '').replace('\n', '')
+          if symbol.isalpha())
+
+# Generating failure array
+failure_array = [0]
+substring_length = 1
+for nt in string[1:]:
+    border_length = failure_array[-1]
+    while True:
+        if string[:border_length+1] == string[:substring_length+1][-border_length-1:]:
+            border_length += 1
+            failure_array.append(border_length)
+            break
+        elif border_length > 0:
+            border_length -= 1
+        else:
+            failure_array.append(0)
+            break
+    substring_length += 1
+
+# Generating answer
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/37. Speeding Up Motif Finding/Answer')
+answer = open('37. Answer.txt', 'w')
+for number in failure_array:
+    answer.write(str(number) + ' ')
+answer.close()

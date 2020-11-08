@@ -1,0 +1,4 @@
+t = open('rosalind_rna.txt', 'r')
+u = open('Answer.txt', 'w')
+u.write(t.read().replace('T', 'U'))
+u.close()

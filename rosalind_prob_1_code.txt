@@ -1,0 +1,35 @@
+# Setting dataset directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\28. Introduction to Random Strings\Datasets')
+
+# Parsing given data
+Raw_Data = open('rosalind_prob.txt', 'r').read().replace('\n', '').strip()
+DNA_String = ''.join(Symbol
+                     for Symbol
+                     in Raw_Data
+                     if Symbol.isalpha())
+GC_Content = [float(Frequency) for Frequency
+              in Raw_Data.replace(DNA_String, '').split(' ')]
+
+# Determining the common logarithm of the probability
+# That a random string constructed with the given GC_Content
+# Matches the given DNA_String exactly
+import math
+Exact_Match_Common_Logarithm = []
+for Frequency in GC_Content:
+    p_Purine = Frequency/2
+    p_Pyrimidine = (1 - Frequency)/2
+    Probability = 1
+    for Nucleotide in DNA_String:
+        if Nucleotide is 'A' or Nucleotide is 'T':
+            Probability *= p_Pyrimidine
+        if Nucleotide is 'G' or Nucleotide is 'C':
+            Probability *= p_Purine
+    Exact_Match_Common_Logarithm.append(round(math.log10(Probability), 3))
+
+# Generation of answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\28. Introduction to Random Strings\Answer')
+Answer = open('28. Answer.txt', 'w')
+for Common_Logarithm in Exact_Match_Common_Logarithm:
+    Answer.write(str(Common_Logarithm) + ' ')
+Answer.close()

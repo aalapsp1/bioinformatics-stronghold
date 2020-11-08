@@ -1,0 +1,27 @@
+# Setting working directory
+import os
+os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/RSTR')
+
+# Parsing data
+data = open('rosalind_rstr.txt' ,'r').read().strip().split('\n')
+number_of_strings = int(data[0].split(' ')[0])
+GC_content = float(data[0].split(' ')[1])
+motif = data[1]
+
+# Determine probability of generating motif with given GC-content
+motif_probability = 1
+for nt in motif:
+    if nt is 'A' or nt is 'T':
+        motif_probability*=((1-GC_content)/2)
+    elif nt is 'G' or nt is 'C':
+        motif_probability*=((GC_content/2))
+
+# Determine probability of obtaining atleast one match with motif when generating number_of_strings using complements
+motif_probability_complement = 1 - motif_probability
+probability_no_matches = motif_probability_complement**number_of_strings
+probability_atleast_one = 1 - probability_no_matches
+
+# Generating answer
+answer = open('rstr_answer.txt', 'w')
+answer.write(str(round(probability_atleast_one, 3)))
+answer.close()

@@ -1,0 +1,22 @@
+import math
+data = open('rosalind_lia.txt', 'r')
+n = list(data.read().strip().split(" "))
+
+p = 0.25
+q = 0.75
+
+k = int(n[0])
+N = int(n[1])
+
+T = 2**k
+j = 0
+
+while N <= T:
+    bc = (math.factorial(T)/(math.factorial(N)*math.factorial(T-N)))
+    i = (p**N) * (q**(T-N)) * bc
+    j += i
+    N += 1
+    
+ans = open('Answer.txt', 'w')
+ans.write(str(round(j, 3)))
+ans.close()

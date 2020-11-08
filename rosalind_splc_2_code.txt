@@ -1,0 +1,74 @@
+#Setting of working directory.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\22. RNA Splicing\Datasets')
+
+#Parsing of data into premRNA and intron sequences.
+FASTA = open('rosalind_splc.txt', 'r').read().strip().replace('\n', '').split('>Rosalind_')[1:]
+Sequences = [''.join([symbol for symbol in FASTA[index] if not symbol.isdigit()])
+             for index in range(0, len(FASTA))]
+premRNA = Sequences[0]
+Introns = Sequences[1:]
+
+#Generation of mature mRNA.
+SplicedmRNA = [premRNA]
+for Intron in Introns:
+    SplicedmRNA.append(SplicedmRNA[-1].replace(Intron, ''))
+MaturemRNA = SplicedmRNA[-1]
+
+#Translation of mature mRNA.
+CodonList = [MaturemRNA[i:i + 3] for i in range(0, len(MaturemRNA), 3)]
+Translation = []
+for Codon in CodonList:
+    if Codon == 'TTT' or Codon == 'TTC':
+            Translation.append('F')
+    if Codon == 'TTA' or Codon == 'TTG' or Codon == 'CTT' or Codon == 'CTC' or Codon == 'CTA' or Codon == 'CTG':
+            Translation.append('L')
+    if Codon == 'TCT' or Codon == 'TCC' or Codon == 'TCA' or Codon == 'TCG':
+            Translation.append('S')
+    if Codon == 'TAT' or Codon == 'TAC':
+            Translation.append('Y')
+    if Codon == 'TGT' or Codon == 'TGC':
+            Translation.append('C')
+    if Codon == 'TGG':
+            Translation.append('W')
+    if Codon == 'CCT' or Codon == 'CCC' or Codon == 'CCA' or Codon == 'CCG':
+            Translation.append('P')
+    if Codon == 'CAT' or Codon == 'CAC':
+            Translation.append('H')
+    if Codon == 'CAA' or Codon == 'CAG':
+            Translation.append('Q')
+    if Codon == 'CGT' or Codon == 'CGC' or Codon == 'CGA' or Codon == 'CGG':
+            Translation.append('R')
+    if Codon == 'ATT' or Codon == 'ATC' or Codon == 'ATA':
+            Translation.append('I')
+    if Codon == 'ATG':
+            Translation.append('M')
+    if Codon == 'ACT' or Codon == 'ACC' or Codon == 'ACA' or Codon == 'ACG':
+            Translation.append('T')
+    if Codon == 'AAT' or Codon == 'AAC':
+            Translation.append('N')
+    if Codon == 'AAA' or Codon == 'AAG':
+            Translation.append('K')
+    if Codon == 'AGT' or Codon == 'AGC':
+            Translation.append('S')
+    if Codon == 'AGA' or Codon == 'AGG':
+            Translation.append('R')
+    if Codon == 'GTT' or Codon == 'GTC' or Codon == 'GTA' or Codon == 'GTG':
+            Translation.append('V')
+    if Codon == 'GCT' or Codon == 'GCC' or Codon == 'GCA' or Codon == 'GCG':
+            Translation.append('A')
+    if Codon == 'GAT' or Codon == 'GAC':
+            Translation.append('D')
+    if Codon == 'GAA' or Codon == 'GAG':
+            Translation.append('E')
+    if Codon == 'GGT' or Codon == 'GGC' or Codon == 'GGA' or Codon == 'GGG':
+            Translation.append('G')
+    if Codon == 'TAA' or Codon == 'TAG' or Codon == 'TGA':
+            break
+Protein = ''.join(Translation)
+
+#Generation of answer.
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\22. RNA Splicing\Answer')
+Answer = open('22. Answer.txt', 'w')
+Answer.write(Protein)
+Answer.close()

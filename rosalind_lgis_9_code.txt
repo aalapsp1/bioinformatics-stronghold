@@ -1,0 +1,54 @@
+#Setting of working directory.
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\24. Longest Increasing Subsequence\Datasets')
+
+#Parsing of data into integer 'n' and permutation.
+Data = open('rosalind_lgis.txt', 'r').readlines()
+n = int(Data[0].strip())
+Permutation = [int(Number) for Number in Data[1].split(' ') if Number is not '']
+
+#Determination of the longest increasing subsequence.
+LIS = [[Permutation[0]]]
+for Number in Permutation:
+    if all(Number > Subsequence[-1] for Subsequence in LIS.copy()):
+        LIS.append(max(LIS, key=len).copy() + [Number]) 
+    elif all(Number < Subsequence[0] for Subsequence in LIS.copy()):
+        for Subsequence in LIS.copy():
+            if len(Subsequence) == 1:
+                LIS.remove(Subsequence)
+        LIS.append([Number])
+    else:
+        CandidateList = [Subsequence for Subsequence in LIS.copy() if Subsequence[-1] < Number]
+        if CandidateList:
+            LIS.append(max(CandidateList, key=lambda x: x[-1]) + [Number])
+            for Subsequence in LIS.copy():
+                if Subsequence != max(CandidateList, key=lambda x: x[-1]) + [Number]:
+                    if len(Subsequence) == len(max(CandidateList, key=lambda x: x[-1]) + [Number]):
+                        LIS.remove(Subsequence)
+    LIS = list(filter(None, LIS.copy()))
+    
+#Determination of the longest decreasing subsequence.
+LDS = [[Permutation[0]]]
+for Number in Permutation:
+    if all(Number < Subsequence[-1] for Subsequence in LDS.copy()):
+        LDS.append(max(LDS, key=len).copy() + [Number]) 
+    elif all(Number > Subsequence[0] for Subsequence in LDS.copy()):
+        for Subsequence in LDS.copy():
+            if len(Subsequence) == 1:
+                LDS.remove(Subsequence)
+        LDS.append([Number])
+    else:
+        CandidateList = [Subsequence for Subsequence in LDS.copy() if Subsequence[-1] > Number]
+        if CandidateList:
+            LDS.append(min(CandidateList, key=lambda x: x[-1]) + [Number])
+            for Subsequence in LDS.copy():
+                if Subsequence != min(CandidateList, key=lambda x: x[-1]) + [Number]:
+                    if len(Subsequence) == len(min(CandidateList, key=lambda x: x[-1]) + [Number]):
+                        LDS.remove(Subsequence)
+    LDS = list(filter(None, LDS.copy()))
+    
+#Generation of answer.
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\24. Longest Increasing Subsequence\Answer')
+Answer = open('24. Answer.txt', 'w')
+Answer.write(' '.join(str(Number) for Number in(max(LIS, key=len))) + '\n' + ' '.join(str(Number) for Number in(max(LDS, key=len))) + '\n')
+Answer.close()

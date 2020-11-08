@@ -1,0 +1,28 @@
+rawdata = open('rosalind_grph.txt', 'r')
+rawdata2 = rawdata.read().strip().replace("\n", "").split(">")
+del rawdata2[0]
+FASTA = []
+sequence = []
+for line in rawdata2:
+    FASTA.append(line[0:13])
+    sequence.append(line[13:])
+dictionary = dict(zip(sequence, FASTA))
+###################################################
+OverlapGraph = []
+for string in sequence:
+    suffix3 = str(string[-3:])
+    for string2 in sequence:
+        if string2 is not string:
+            prefix3 = str(string2[0:3])
+            if suffix3 == prefix3:
+                OverlapGraph.append(str(dictionary[string])+ ' ' + str(dictionary[string2]))
+###################################################
+ans1 = open('Answer.txt', 'w')
+for item in OverlapGraph:
+    ans1.write(str(item) + '\n')
+ans1.close()
+ans2 = open('Answer.txt', 'r')
+transfer = ans2.read().strip()
+ans3 = open('Answer.txt', 'w')
+ans3.write(transfer)
+ans3.close()

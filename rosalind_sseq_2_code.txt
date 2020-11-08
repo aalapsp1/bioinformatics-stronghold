@@ -1,0 +1,34 @@
+# Setting working directory
+import os
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\30. Finding a Spliced Motif\Datasets')
+
+# Parsing data into pre-mRNA and target motif
+Raw_Data = open('rosalind_sseq.txt', 'r')
+Strings = []
+for FASTA in Raw_Data.read().split('>')[1:]:
+    Strings.append(''.join([Symbol
+                            for Symbol
+                            in FASTA.replace('Rosalind_', '').replace('\n', '')
+                            if Symbol.isalpha()]))
+pre_mRNA = Strings[0]
+Target_Motif = Strings[1]
+
+# Determining one set of indices
+Indices = []
+x = 0
+for Nucleotide in Target_Motif:
+    Switch = 0
+    while Switch == 0:
+        if Nucleotide == pre_mRNA[x]:
+            Indices.append(x + 1)
+            Switch = 1
+            x += 1
+        else:
+            x += 1
+
+# Generation of answer
+os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\30. Finding a Spliced Motif\Answer')
+Answer = open('30. Answer.txt', 'w')
+for Index in Indices:
+    Answer.write(str(Index) + ' ')
+Answer.close()

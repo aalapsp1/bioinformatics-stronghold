@@ -1,0 +1,45 @@
+#Set working directory, prepare for UniProt API access
+import os
+import requests
+os.chdir(r"C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\16. Finding a Protein Motif\Datasets")
+
+#Parse raw data
+UniProt_Protein_Database_access_IDs = open('rosalind_mprt.txt', 'r').read().split()
+
+#Fetch FASTA data from UniProt and assign to given ID
+ID_Sequence = {}
+ID_MotifPosition = {}
+for ID in UniProt_Protein_Database_access_IDs:
+    FASTA = requests.get('https://www.uniprot.org/uniprot/' + str(ID) + '.fasta').text.strip().replace('\n', '')
+    ID_Sequence[ID] = FASTA[FASTA.find('SV=') + 4:]
+
+#Identify N-glycosylation motif positions
+for ID in ID_Sequence:
+    x = 0
+    MotifPosition = []
+    for AminoAcid in ID_Sequence[ID]:
+        while 0 <= x < (len(ID_Sequence[ID]) - 2):
+            if ID_Sequence[ID][x] is 'N':
+                if ID_Sequence[ID][x + 1] is not 'P':
+                    if ID_Sequence[ID][x + 2] is 'S' or ID_Sequence[ID][x + 2] is 'T':
+                        if ID_Sequence[ID][x + 3] is  not 'P':
+                            MotifPosition.append(x + 1)
+                            x += 1
+                        else: x += 1
+                    else:
+                        x += 1
+                else:
+                    x += 1
+            else:
+                x += 1
+        ID_MotifPosition[ID] = MotifPosition
+
+#Remove ID's with no motif
+ID_MotifPosition = {ID:Position for ID,Position in ID_MotifPosition.items() if Position}
+
+#Format and create answer
+os.chdir(r"C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\16. Finding a Protein Motif\Answer")
+ans = open('Answer.txt', 'w')
+for ID in ID_MotifPosition:
+    ans.write(ID + '\n' + str(ID_MotifPosition[ID]).replace('[', '').replace(']', '').replace(',', ' ') + '\n')
+ans.close()
