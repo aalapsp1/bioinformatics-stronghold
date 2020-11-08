@@ -1,0 +1,8 @@
+# Parsing data
+raw_data = open('rosalind_inod.txt' ,'r').read().strip()
+n = int(raw_data)
+
+# Generating answer
+answer = open('inod_answer.txt', 'w')
+answer.write(str(n-2))
+answer.close()
