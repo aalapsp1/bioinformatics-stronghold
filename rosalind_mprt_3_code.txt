@@ -1,7 +1,5 @@
-#Set working directory, prepare for UniProt API access
-import os
+#Prepare for UniProt API access
 import requests
-os.chdir(r"C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\16. Finding a Protein Motif\Datasets")
 
 #Parse raw data
 UniProt_Protein_Database_access_IDs = open('rosalind_mprt.txt', 'r').read().split()
@@ -38,7 +36,6 @@ for ID in ID_Sequence:
 ID_MotifPosition = {ID:Position for ID,Position in ID_MotifPosition.items() if Position}
 
 #Format and create answer
-os.chdir(r"C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\16. Finding a Protein Motif\Answer")
 ans = open('Answer.txt', 'w')
 for ID in ID_MotifPosition:
     ans.write(ID + '\n' + str(ID_MotifPosition[ID]).replace('[', '').replace(']', '').replace(',', ' ') + '\n')
