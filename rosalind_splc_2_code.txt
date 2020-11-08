@@ -1,7 +1,3 @@
-#Setting of working directory.
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\22. RNA Splicing\Datasets')
-
 #Parsing of data into premRNA and intron sequences.
 FASTA = open('rosalind_splc.txt', 'r').read().strip().replace('\n', '').split('>Rosalind_')[1:]
 Sequences = [''.join([symbol for symbol in FASTA[index] if not symbol.isdigit()])
@@ -68,7 +64,6 @@ for Codon in CodonList:
 Protein = ''.join(Translation)
 
 #Generation of answer.
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\22. RNA Splicing\Answer')
 Answer = open('22. Answer.txt', 'w')
 Answer.write(Protein)
 Answer.close()
