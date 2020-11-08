@@ -1,6 +1,4 @@
 #Retrieving and parsing data.
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\21. Locating Restriction Sites\Datasets')
 String = ''.join(open('rosalind_revp.txt', 'r').readlines()[1:]).strip().replace('\n', '')
 
 #Determining all positions of reverse palindromes between size 4 and 12.
@@ -33,7 +31,6 @@ for Nucleotide in String:
     Length = 4
 
 #Generation of Answer
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\21. Locating Restriction Sites\Answer')
 Answer = open('21. Answer.txt', 'w')
 for Position, Length in zip(PositionList, LengthList):
     Answer.write(str(Position) + ' ' + str(Length) + '\n')
