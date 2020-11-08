@@ -1,7 +1,3 @@
-#Setting of working directory.
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\25. Genome Assembly as Shortest Superstring\Datasets')
-
 #Parsing of data into seed string and string bank.
 Data = open('rosalind_long.txt', 'r').read().replace('\n', '').replace('Rosalind_', '').split('>')[1:]
 StringList = [''.join(list(filter(lambda x: x.isalpha(), String))) for String in Data]
@@ -31,7 +27,6 @@ while StringBank.copy():
             StringBank.remove(String)
             
 #Creation of answer.  
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\25. Genome Assembly as Shortest Superstring\Answer')  
 Answer = open('25. Answer.txt', 'w')
 Answer.write(ShortestSuperstring[-1])
 Answer.close()
