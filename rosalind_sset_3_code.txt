@@ -1,7 +1,3 @@
-# Setting working directory
-import os
-os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/SSET')
-
 # Parsing data
 data = open('rosalind_sset.txt' ,'r')
 n = int(data.next()) 
