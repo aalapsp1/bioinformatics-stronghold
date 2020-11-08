@@ -25,7 +25,6 @@ for nt in string[1:]:
     substring_length += 1
 
 # Generating answer
-os.chdir(r'/mnt/c/Users/Aalap/OneDrive - University of Calgary/Rosalind/Bioinformatics Stronghold/37. Speeding Up Motif Finding/Answer')
 answer = open('37. Answer.txt', 'w')
 for number in failure_array:
     answer.write(str(number) + ' ')
