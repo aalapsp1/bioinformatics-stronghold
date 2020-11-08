@@ -1,7 +1,3 @@
-# Setting dataset directory
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\28. Introduction to Random Strings\Datasets')
-
 # Parsing given data
 Raw_Data = open('rosalind_prob.txt', 'r').read().replace('\n', '').strip()
 DNA_String = ''.join(Symbol
@@ -28,7 +24,6 @@ for Frequency in GC_Content:
     Exact_Match_Common_Logarithm.append(round(math.log10(Probability), 3))
 
 # Generation of answer
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\28. Introduction to Random Strings\Answer')
 Answer = open('28. Answer.txt', 'w')
 for Common_Logarithm in Exact_Match_Common_Logarithm:
     Answer.write(str(Common_Logarithm) + ' ')
