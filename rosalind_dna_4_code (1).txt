@@ -1,0 +1,18 @@
+x = open('rosalind_dna.txt', 'r')
+n = x.read().strip('\n')
+A = []
+T = []
+G = []
+C = []
+for base in n:
+    if base == 'A':
+        A.append(base)
+    if base == 'T':
+        T.append(base)
+    if base == 'G':
+        G.append(base)
+    if base == 'C':
+        C.append(base)
+B = open('Answer.txt', 'w')
+B.write(str(" ") + str(len(A)) + str(" ") + str(len(C)) + str(" ") + str(len(G)) + str(" ") + str(len(T)) + str(" "))
+B.close()
