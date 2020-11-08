@@ -1,7 +1,3 @@
-# Setting working directory
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\36. k-Mer Composition\Datasets')
-
 # Parsing data
 Data = open('rosalind_kmer.txt', 'r')
 String = ''.join([Symbol
