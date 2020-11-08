@@ -1,7 +1,3 @@
-#Setting of working directory.
-import os
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\24. Longest Increasing Subsequence\Datasets')
-
 #Parsing of data into integer 'n' and permutation.
 Data = open('rosalind_lgis.txt', 'r').readlines()
 n = int(Data[0].strip())
@@ -48,7 +44,6 @@ for Number in Permutation:
     LDS = list(filter(None, LDS.copy()))
     
 #Generation of answer.
-os.chdir(r'C:\Users\aalap\Dropbox\Rosalind\Bioinformatics Stronghold\24. Longest Increasing Subsequence\Answer')
 Answer = open('24. Answer.txt', 'w')
 Answer.write(' '.join(str(Number) for Number in(max(LIS, key=len))) + '\n' + ' '.join(str(Number) for Number in(max(LDS, key=len))) + '\n')
 Answer.close()
