@@ -1,0 +1,80 @@
+import numpy as np
+import sys
+sys.setrecursionlimit(1500) # Needed to recursively navigate backtrack_array using output_lcs().
+
+# Parse data file into DNA strings and store each in separate variable.
+data = open('rosalind_lcsq.txt', 'r') 
+strings = []
+string = []
+for line in data.readlines():
+    if line.startswith('>'):
+        strings.append(''.join(string))
+        string = []
+    else:
+        string.append(line.strip().replace('\r\n', ''))
+else:
+    strings.append(''.join(string))
+    del strings[0]
+
+
+# Both strings are prepended with a hyphen to simplify backtrack_array dimensions.
+query_string = '-' + min(strings, key=len) # Shorter string denoted as query.
+template_string = '-' + max(strings, key=len)  # Longer string denoted as template.
+
+# Initialize the match_array, which keeps track of match scores between the query and template strings.
+match_array = np.zeros((len(template_string), len(query_string)))
+
+# Initialize the backtrack_array, which represents the source-to-sink paths used to build the match_array.
+backtrack_array = np.zeros((len(template_string), len(query_string)), dtype=object)
+
+# Initial labelling of backtrack_array for improved readability.
+backtrack_array[[0], :] = ['in']
+backtrack_array[:, [0]] = ['del']
+backtrack_array[[0], [0]] = ['source']
+
+# Populate the match_array and backtrack_array in parallel with a dynamic programming implementation.
+for i in range(len(template_string))[1:]:
+    for j in range(len(query_string))[1:]:
+        match = 0
+        if template_string[i] == query_string[j]:
+            match += 1
+        match_array[i, j] = max(match_array[i, j-1], match_array[i-1, j], match_array[i-1, j-1] + match)
+        pathway_trace = []
+        if match_array[i, j] == match_array[i, j-1]:    
+            pathway_trace.append('in')
+        if match_array[i, j] == match_array[i-1, j]:
+            pathway_trace.append('del')
+        if match_array[i, j] == match_array[i-1, j-1] + match and match == 1:
+            pathway_trace.append('match')
+        backtrack_array[i, j] = pathway_trace
+
+# Recursive function that navigates one path of the backtrack_array and returns the corresponding longest common subsequence.
+def output_lcs(backtrack_array, query_string, i, j):
+    if i == 0 or j == 0:
+        return ""
+    elif backtrack_array[i, j][0] == 'match':
+        return output_lcs(backtrack_array, query_string, i-1, j-1) + query_string[j]
+    elif backtrack_array[i, j][0] == 'in':
+        return output_lcs(backtrack_array, query_string, i, j-1)
+    elif backtrack_array[i, j][0] == 'del':
+        return output_lcs(backtrack_array, query_string, i-1, j)
+
+# Generating answer.
+answer = open('lcsq_answer.txt', 'w')
+answer.write(output_lcs(backtrack_array, query_string, len(template_string)-1, len(query_string)-1))
+answer.close()
+
+
+# Experimental function and code for determining ALL distinct longest common subsequences.
+#def output_all_lcs(backtrack_array, query_string, lcs, i, j):
+#    if i == 0 or j == 0:
+#        yield lcs
+#    for pathway_trace in backtrack_array[i, j]:
+#        if pathway_trace == 'match':
+#            yield from output_all_lcs(backtrack_array, query_string, query_string[j] + lcs, i-1, j-1)
+#        if pathway_trace == 'in':
+#            yield from output_all_lcs(backtrack_array, query_string, lcs, i, j-1)
+#        if pathway_trace == 'del':
+#            yield from output_all_lcs(backtrack_array, query_string, lcs, i-1, j)
+#for lcs in set(output_all_lcs(backtrack_array, query_string, "", len(template_string)-1, len(query_string)-1)):
+#    print(lcs)
